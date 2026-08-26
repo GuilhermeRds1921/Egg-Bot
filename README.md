@@ -156,8 +156,8 @@ Sugestões para evolução:
 **Robotnik - DAINF-PB**  
 Departamento Acadêmico de Informática - UTFPR, Campus Pato Branco.
 
-Repositório: adicionar URL do repositório quando estiver criado ou confirmado.
+Orientador: Vinicius Pegorini
+- Aluno: Guilherme Rodrigues dos Santos
+- Aluno: Laura Armiliato Sangalli
+- Aluno: Lucas Tarcísio Morais Pies
 
-## Licença
-
-Consulte o arquivo `LICENSE` deste repositório. Quando o projeto usar materiais derivados ou adaptados de terceiros, mantenha os créditos e as licenças originais indicados nas referências.
