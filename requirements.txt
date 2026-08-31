@@ -1,0 +1,34 @@
+# Dependências do Pré-Plotter
+
+O arquivo `requirements.txt` lista as dependências Python necessárias:
+
+```
+pyserial>=3.5
+```
+
+## Instalação
+
+```bash
+pip install -r requirements.txt
+```
+
+ou
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+### Alternativa (sem arquivo requirements.txt)
+
+```bash
+pip install pyserial
+```
+
+## Versão do Python
+
+Mínimo: Python 3.7 (distribuído com Ubuntu 18.04+)
+
+Verificar:
+```bash
+python3 --version
+```
