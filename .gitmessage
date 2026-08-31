@@ -1,0 +1,12 @@
+<type>(<scope>): <subject>
+
+<body>
+
+# Types:
+#   feat: new feature
+#   fix: bug fix
+#   docs: documentation
+#   refactor: refactor
+#   test: tests
+#   chore: maintenance
+#   perf: performance
