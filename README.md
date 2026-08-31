@@ -2,101 +2,54 @@
 
 ![Arduino](https://img.shields.io/badge/Arduino-Uno-149ddd?style=for-the-badge) ![Python](https://img.shields.io/badge/Python-3.7%2B-3776AB?style=for-the-badge) ![Serial](https://img.shields.io/badge/Serial-9600%20baud-0A0A0A?style=for-the-badge) ![Robótica](https://img.shields.io/badge/Robótica-EggBot-ff5a5f?style=for-the-badge)
 
-> Projeto EggBot para desenho e pintura em ovos, com controle via Arduino/firmware EggDuino e interface CLI em Ubuntu.
+> Projeto EggBot para desenho e pintura em ovos com Arduino, firmware EggDuino e pré-plotter em Python para Ubuntu.
 
-Este README reúne a documentação principal do projeto em um único lugar. Ele centraliza:
-- visão geral do projeto
-- hardware e arquitetura
-- uso do pré-plotter
-- padrões disponíveis
-- testes reais
-- convenção de commits
-
-A pasta EggDuino fica isolada e não foi alterada.
-
----
-
-## Sumário
-
-- [Visão geral](#visão-geral)
-- [Status atual](#status-atual)
-- [Arquitetura](#arquitetura)
-- [Estrutura do repositório](#estrutura-do-repositório)
-- [Pré-requisitos](#pré-requisitos)
-- [Instalação rápida](#instalação-rápida)
-- [Uso do pré-plotter](#uso-do-pré-plotter)
-- [Padrões disponíveis](#padrões-disponíveis)
-- [Testes validos no hardware](#testes-validos-no-hardware)
-- [Comandos úteis](#comandos-úteis)
-- [Convenção de commits](#convenção-de-commits)
-- [Regras de contribuição](#regras-de-contribuição)
+Este repositório reúne o software principal e a documentação de uso do projeto. A pasta EggDuino foi mantida como exceção e não foi alterada neste fluxo de documentação.
 
 ---
 
 ## Visão geral
 
-O EggBot é um robô demonstrativo para desenhar ou pintar ovos. O projeto combina:
+O EggBot é um robô demonstrativo para desenhar e pintar ovos. O sistema combina:
+
 - estrutura mecânica
-- motores passo a passo
+- dois motores de passo
 - Arduino UNO
 - firmware EggDuino
-- comunicação serial
-- lógica de planejamento de movimento em Python
+- comunicação serial via USB
+- planejamento de movimento em Python
+- execução por linha de comando sem interface gráfica
 
-A parte de software do projeto foi organizada em um pré-plotter sem interface gráfica, executado em Ubuntu via terminal.
+A parte de software foi organizada como um pré-plotter CLI para controlar o robô de forma segura e reproduzível.
 
 ---
 
 ## Status atual
 
-✅ Hardware original validado
+✅ Hardware validado
 - Arduino UNO + CNC Shield
 - 2 motores NEMA 17
-- Firmware EggDuino instalado e funcionando
+- firmware EggDuino funcionando
 
 ✅ Comunicação serial validada
-- comando `SM,2000,0,800` funcionou corretamente
-- protocolo EggDuino está operacional
+- comando `SM,2000,0,800` executado corretamente
+- protocolo EggDuino operacional
 
-✅ Pré-plotter Python em Ubuntu implementado
-- CLI via terminal
-- teste de movimento em modo real e simulação
-- geração de padrões matemáticos
+✅ Pré-plotter funcional em Ubuntu
+- CLI em terminal
+- modo simulação e modo execução real
+- cálculo automático de movimento
+- geração de padrões geométricos
 
-✅ Padrões geométricos testados no hardware real
+✅ Padrões testados no hardware real
 - senoide
 - espiral
 - círculo
 
-⏳ Etapas futuras
+⏳ Próximos passos
 - importação de SVG
-- controle de servo pen up/down
+- pen up/down via servo
 - integração com ESP32
-
----
-
-## Arquitetura
-
-A arquitetura do sistema pode ser entendida em quatro camadas:
-
-- Mecânica: suporte do ovo, suporte da caneta, estrutura do robô
-- Eletrônica: Arduino UNO, CNC Shield, drivers e motores
-- Firmware: EggDuino, responsável pela execução dos movimentos
-- Software: Python para planejamento, serial e CLI
-
-### Fluxo de operação
-
-```text
-Ubuntu / Python
-    ↓
-pré-plotter CLI
-    ↓
-serial /dev/ttyACM0
-    ↓
-firmware EggDuino
-    ↓
-2 motores passo a passo
-```
 
 ---
 
@@ -104,29 +57,23 @@ firmware EggDuino
 
 ```text
 Egg-Bot/
-├── README.md                       # documentação central do projeto
-├── COMO_USAR_COM_GPT.md            # guia de uso com IA (opcional/complementar)
-├── TESTE_ARDUINO_RESULTADO.md      # relatório de testes reais
-├── TESTE_PADROES_RESULTADO.md      # relatório de padrões
-├── RESUMO_PADROES.md               # resumo rápido
-├── exemplos_padroes.py             # exemplos de padrões
-├── eggbot.py                      # software principal do projeto
-├── eggbot_conf.py                 # configuração do sistema
-├── requirements.txt               # dependências Python
-├── preplotter/                    # módulo de pré-plotter
+├── README.md               # documentação principal do projeto
+├── eggbot.py               # software principal
+├── eggbot_conf.py          # configurações do projeto
+├── requirements.txt        # dependências Python
+├── preplotter/             # módulo do pré-plotter
 │   ├── __init__.py
 │   ├── planner.py
 │   ├── eggduino.py
 │   ├── patterns.py
 │   ├── main.py
 │   └── README.md
-├── docs/
-│   └── preplotter.md
-└── EggDuino/                      # pasta de firmware/implementação externa
-    └── (não alterada neste projeto de documentação/uso)
+├── .gitmessage            # template de commits
+├── EggDuino/               # firmware/implementação externa (exceção)
+└── outros arquivos locais de apoio
 ```
 
-> A pasta EggDuino permanece como exceção e não é alvo de mudanças nesta padronização.
+> A pasta EggDuino permanece fora do escopo desta padronização.
 
 ---
 
@@ -136,7 +83,7 @@ Egg-Bot/
 - Ubuntu Linux
 - Arduino UNO conectado por USB
 - firmware EggDuino carregado no Arduino
-- acesso à porta serial do Arduino
+- permissão de acesso à porta serial
 
 ### Permissões do Ubuntu
 
@@ -144,7 +91,7 @@ Egg-Bot/
 sudo usermod -aG dialout $USER
 ```
 
-Depois faça logout/login ou reinicie a sessão.
+Depois reinicie a sessão ou faça logout/login.
 
 ---
 
@@ -165,13 +112,15 @@ pip install pyserial
 
 ---
 
-## Uso do pré-plotter
+## Como usar o pré-plotter
 
-### Modo seguro (sem movimento real)
+### Modo seguro
 
 ```bash
 python3 -m preplotter.main --port /dev/ttyACM0
 ```
+
+Sem `--run`, o sistema apenas simula e não move os motores.
 
 ### Teste de referência
 
@@ -226,18 +175,16 @@ python3 -m preplotter.main --help
 
 ## Padrões disponíveis
 
-O sistema possui geradores de padrões para desenho por segmentos.
-
-### Lista de padrões
+O pré-plotter também gera padrões matemáticos para desenho sequencial.
 
 | Padrão | Comando | Descrição |
 |---|---|---|
 | Senoide | `--pattern sine` | onda senoidal do topo à base do ovo |
 | Multi-senoide | `--pattern multi-sine` | dois períodos de senoide |
 | Espiral | `--pattern spiral` | espiral expandindo |
-| Quadrado | `--pattern square` | teste geométrico |
+| Quadrado | `--pattern square` | desenho geométrico simples |
 | Círculo | `--pattern circle` | calibração e simetria |
-| Estrela | `--pattern star` | desenho estelar |
+| Estrela | `--pattern star` | padrão estelar |
 
 ### Exemplos
 
@@ -259,28 +206,11 @@ python3 -m preplotter.main --port /dev/ttyACM0 --run --pattern spiral
 python3 -m preplotter.main --port /dev/ttyACM0 --run --pattern circle
 ```
 
-#### Exemplo de uso em Python
-
-```python
-from preplotter.patterns import PatternGenerator
-
-segments = PatternGenerator.sine_wave(
-    rotation_start=0,
-    rotation_end=3200,
-    amplitude=500,
-    speed=250,
-    num_points=64,
-    vertical_offset=200,
-)
-
-print(f"Gerados {len(segments)} segmentos")
-```
-
 ---
 
-## Testes validos no hardware
+## Testes no hardware
 
-Os testes abaixo foram executados no Arduino real com firmware EggDuino e todos passaram.
+Os testes abaixo foram executados no Arduino real com o firmware EggDuino e passaram com sucesso.
 
 ### Teste 1: referência
 
@@ -288,15 +218,13 @@ Os testes abaixo foram executados no Arduino real com firmware EggDuino e todos 
 python3 -m preplotter.main --port /dev/ttyACM0 --run --test reference
 ```
 
-Resultado esperado: movimento de `SM,2000,0,800`
+Resultado esperado: `SM,2000,0,800`
 
 ### Teste 2: retorno
 
 ```bash
 python3 -m preplotter.main --port /dev/ttyACM0 --run --test return
 ```
-
-Resultado esperado: movimento de `SM,2000,0,-800`
 
 ### Teste 3: braço
 
@@ -316,41 +244,35 @@ python3 -m preplotter.main --port /dev/ttyACM0 --run --test diagonal
 python3 -m preplotter.main --port /dev/ttyACM0 --run --pattern sine
 ```
 
-Resultado: padrão de linha senoidal do topo à base do ovo executado com sucesso.
+Resultado: linha senoidal do topo à base do ovo executada com sucesso.
 
 ---
 
 ## Comandos úteis
 
-### Verificar portas USB
+### Ver portas USB
 
 ```bash
 ls /dev/tty*
 ```
 
-### Ver a ajuda
+### Ver ajuda
 
 ```bash
 python3 -m preplotter.main --help
 ```
 
-### Rodar a suíte de exemplos
+### Rodar exemplos
 
 ```bash
 python3 exemplos_padroes.py
-```
-
-### Ver a versão do firmware
-
-```bash
-python3 -m preplotter.main --port /dev/ttyACM0 --run --test reference
 ```
 
 ---
 
 ## Convenção de commits
 
-O projeto usa uma convenção simples e padronizada, inspirada em Conventional Commits, para manter um histórico limpo e legível.
+O projeto usa uma convenção simples e padronizada, inspirada em Conventional Commits.
 
 ### Estrutura
 
@@ -358,66 +280,51 @@ O projeto usa uma convenção simples e padronizada, inspirada em Conventional C
 <tipo>(<escopo>): <descrição curta>
 ```
 
-### Tipos permitidos
+### Tipos recomendados
 
 - `feat`: nova funcionalidade
 - `fix`: correção de bug
 - `docs`: documentação
-- `refactor`: refatoração sem mudança funcional
+- `refactor`: refatoração
 - `test`: testes
-- `chore`: manutenção e configurações
-- `perf`: melhoria de performance
+- `chore`: manutenção
+- `perf`: performance
 
 ### Exemplos
 
 ```bash
 git commit -m "feat(preplotter): add sine wave pattern support"
 git commit -m "fix(serial): handle invalid EggDuino response"
-git commit -m "docs(readme): centralize project instructions in root README"
+git commit -m "docs(readme): centralize project instructions"
 git commit -m "test(patterns): validate spiral and circle generation"
 ```
 
 ### Regras
 
-- usar verbo no imperativo: `add`, `fix`, `update`, `remove`
+- usar verbo no imperativo
 - manter a mensagem curta e clara
-- escopo opcional, mas recomendado
-- separar corpo e descrição quando necessário
-
-### Template local
-
-O repositório está configurado com um template de commit para facilitar o padrão.
-
-```bash
-git config --local commit.template .gitmessage
-```
-
-O template contém:
-
-```text
-<type>(<scope>): <subject>
-
-<body>
-```
+- usar escopo quando fizer sentido
+- manter histórico consistente
 
 ---
 
 ## Regras de contribuição
 
-- manter o README raiz como fonte principal de uso
-- documentar mudanças de comportamento e comandos
-- não alterar a pasta `EggDuino` sem necessidade explícita
-- testar no hardware antes de fechar mudanças relevantes
-- usar commits compatíveis com a convenção acima
+- manter o README principal como ponto central de referência
+- documentar mudanças de comportamento e comando
+- não alterar a pasta EggDuino sem necessidade explícita
+- validar no hardware em mudanças relevantes
+- seguir a convenção de commits acima
 
 ---
 
 ## Observações finais
 
 Este projeto foi organizado para funcionar de forma simples no Ubuntu, com foco em:
+
 - estabilidade serial
 - validação real do hardware
-- facilidade de uso por linha de comando
+- facilidade de uso em linha de comando
 - expansão de padrões de desenho
 
-O README raiz agora funciona como ponto central de referência do projeto.
+O README principal agora centraliza as instruções do projeto e deixa a base de uso clara para desenvolvimento e uso futuro.
