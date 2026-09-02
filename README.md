@@ -5,11 +5,11 @@
 ![Python](https://img.shields.io/badge/Python-Plotter-3776AB?style=for-the-badge)
 ![Web](https://img.shields.io/badge/Web-Interface-61DAFB?style=for-the-badge)
 
-[![EggBot](https://github.com/GuilhermeRds1921/Egg-Bot/blob/main/imagem01.jpeg?raw=true)](https://github.com/GuilhermeRds1921/Egg-Bot/blob/main/imagem01.jpeg)
+[![EggBot](https://github.com/GuilhermeRds1921/Egg-Bot/blob/main/capa.jpeg?raw=true)](https://github.com/GuilhermeRds1921/Egg-Bot/blob/main/capa.jpeg)
 
 ## Sobre o projeto
 
-Este projeto tem como objetivo transformar um **EggBot** em um sistema IoT completo para desenho automático em ovos.
+Este projeto tem como objetivo transformar um **EggBot** em um sistema IoT completo com Dashboard e área para desenho automático em ovos.
 
 O EggBot e o firmware EggDuino já fornecem a base mecânica e o controle dos motores. O foco deste repositório é desenvolver a camada de software necessária para permitir que uma pessoa envie uma imagem por uma interface web e o sistema converta essa imagem em movimentos que possam ser executados pelo robô.
 
