@@ -4,7 +4,7 @@
 ![Python](https://img.shields.io/badge/Python-3.7%2B-3776AB?style=for-the-badge)
 ![Serial](https://img.shields.io/badge/Serial-9600%20baud-0A0A0A?style=for-the-badge)
 
-[![EggBot](https://github.com/GuilhermeRds1921/Egg-Bot/blob/main/imagem01.jpeg?raw=true)](https://github.com/GuilhermeRds1921/Egg-Bot/blob/main/imagem01.jpeg)
+[![EggBot](https://github.com/GuilhermeRds1921/Egg-Bot/blob/main/imagem01.jpeg?raw=true)](https://github.com/GuilhermeRds1921/Egg-Bot/blob/main/capa.jpeg)
 
 ## Sobre o projeto
 
