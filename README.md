@@ -1,377 +1,152 @@
 # EggBot
 
-![Arduino](https://img.shields.io/badge/Arduino-Uno-149ddd?style=for-the-badge) ![Python](https://img.shields.io/badge/Python-3.7%2B-3776AB?style=for-the-badge) ![Serial](https://img.shields.io/badge/Serial-9600%20baud-0A0A0A?style=for-the-badge) ![Robótica](https://img.shields.io/badge/Robótica-EggBot-ff5a5f?style=for-the-badge)
+![Arduino](https://img.shields.io/badge/Arduino-Uno-149ddd?style=for-the-badge)
+![Python](https://img.shields.io/badge/Python-3.7%2B-3776AB?style=for-the-badge)
+![Serial](https://img.shields.io/badge/Serial-9600%20baud-0A0A0A?style=for-the-badge)
 
 [![EggBot](https://github.com/GuilhermeRds1921/Egg-Bot/blob/main/imagem01.jpeg?raw=true)](https://github.com/GuilhermeRds1921/Egg-Bot/blob/main/imagem01.jpeg)
 
-> Projeto EggBot para desenho e pintura em ovos com Arduino, firmware EggDuino e pré-plotter em Python para Ubuntu.
+## Sobre o projeto
 
-Este repositório reúne o software principal e a documentação de uso do projeto. A pasta EggDuino foi mantida como exceção e não foi alterada neste fluxo de documentação.
+EggBot desenvolvido para desenho em ovos utilizando **Arduino UNO**, motores de passo e firmware **EggDuino**.
 
----
+O projeto inclui um pré-plotter desenvolvido em **Python**, responsável por planejar movimentos e enviar comandos ao Arduino diretamente pela porta serial.
 
-## Visão geral
+O sistema funciona sem interface gráfica e pode ser controlado completamente pelo terminal.
 
-O EggBot é um robô demonstrativo para desenhar e pintar ovos. O sistema combina:
+### Principais tecnologias
 
-* estrutura mecânica
-* dois motores de passo
 * Arduino UNO
-* firmware EggDuino
-* comunicação serial via USB
-* planejamento de movimento em Python
-* execução por linha de comando sem interface gráfica
-
-A parte de software foi organizada como um pré-plotter CLI para controlar o robô de forma segura e reproduzível.
-
----
-
-## Status atual
-
-✅ Hardware validado
-
-* Arduino UNO + CNC Shield
-* 2 motores NEMA 17
-* firmware EggDuino funcionando
-
-✅ Comunicação serial validada
-
-* comando `SM,2000,0,800` executado corretamente
-* protocolo EggDuino operacional
-
-✅ Pré-plotter funcional em Ubuntu
-
-* CLI em terminal
-* modo simulação e modo execução real
-* cálculo automático de movimento
-* geração de padrões geométricos
-
-✅ Padrões testados no hardware real
-
-* senoide
-* espiral
-* círculo
-
-⏳ Próximos passos
-
-* importação de SVG
-* pen up/down via servo
-* integração com ESP32
+* CNC Shield
+* Motores NEMA 17
+* EggDuino
+* Python
+* PySerial
+* Comunicação serial
+* Planejamento de movimento
 
 ---
 
-## Estrutura do repositório
+## Funcionamento
+
+```text
+Python
+   ↓
+Pré-plotter
+   ↓
+Comunicação Serial
+   ↓
+Arduino UNO
+   ↓
+EggDuino
+   ↓
+Motores de Passo
+   ↓
+EggBot
+```
+
+O pré-plotter converte coordenadas e padrões geométricos em comandos compatíveis com o protocolo EggDuino.
+
+---
+
+## Estrutura
 
 ```text
 Egg-Bot/
-├── README.md               # documentação principal do projeto
-├── imagem01.jpeg           # imagem de capa do projeto
-├── eggbot.py               # software principal
-├── eggbot_conf.py          # configurações do projeto
-├── requirements.txt        # dependências Python
-├── preplotter/             # módulo do pré-plotter
-│   ├── __init__.py
+├── eggbot.py
+├── eggbot_conf.py
+├── requirements.txt
+├── preplotter/
 │   ├── planner.py
 │   ├── eggduino.py
 │   ├── patterns.py
-│   ├── main.py
-│   └── README.md
-├── .gitmessage             # template de commits
-├── EggDuino/               # firmware/implementação externa (exceção)
-└── outros arquivos locais de apoio
+│   └── main.py
+├── EggDuino/
+└── README.md
 ```
-
-> A pasta EggDuino permanece fora do escopo desta padronização.
 
 ---
 
-## Pré-requisitos
+## Instalação
 
-* Python 3.7+
-* Ubuntu Linux
-* Arduino UNO conectado por USB
-* firmware EggDuino carregado no Arduino
-* permissão de acesso à porta serial
+```bash
+git clone https://github.com/GuilhermeRds1921/Egg-Bot.git
+cd Egg-Bot
 
-### Permissões do Ubuntu
+python3 -m venv .venv
+source .venv/bin/activate
+
+pip install -r requirements.txt
+```
+
+No Linux, pode ser necessário permitir acesso à porta serial:
 
 ```bash
 sudo usermod -aG dialout $USER
 ```
 
-Depois reinicie a sessão ou faça logout/login.
-
 ---
 
-## Instalação rápida
+## Execução
 
-```bash
-cd ~/Documentos/Github/Egg-Bot
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-Se quiser instalar apenas a dependência principal:
-
-```bash
-pip install pyserial
-```
-
----
-
-## Como usar o pré-plotter
-
-### Modo seguro
+### Simulação
 
 ```bash
 python3 -m preplotter.main --port /dev/ttyACM0
 ```
 
-Sem `--run`, o sistema apenas simula e não move os motores.
-
-### Teste de referência
-
-```bash
-python3 -m preplotter.main --port /dev/ttyACM0 --run --test reference
-```
-
-### Teste de retorno
-
-```bash
-python3 -m preplotter.main --port /dev/ttyACM0 --run --test return
-```
-
-### Teste do eixo do braço
-
-```bash
-python3 -m preplotter.main --port /dev/ttyACM0 --run --test arm
-```
-
-### Teste diagonal
-
-```bash
-python3 -m preplotter.main --port /dev/ttyACM0 --run --test diagonal
-```
-
-### Todos os testes
-
-```bash
-python3 -m preplotter.main --port /dev/ttyACM0 --run --test all
-```
-
-### Movimento customizado
+### Teste no hardware
 
 ```bash
 python3 -m preplotter.main \
   --port /dev/ttyACM0 \
   --run \
-  --start-rotation 0 \
-  --start-arm 0 \
-  --end-rotation 500 \
-  --end-arm 300 \
-  --speed 200
+  --test diagonal
 ```
 
-### Ajuda da CLI
+### Executar padrão
 
 ```bash
-python3 -m preplotter.main --help
+python3 -m preplotter.main \
+  --port /dev/ttyACM0 \
+  --run \
+  --pattern sine
 ```
+
+Padrões disponíveis incluem:
+
+* senoide
+* espiral
+* círculo
+* quadrado
+* estrela
 
 ---
 
-## Padrões disponíveis
+## Status
 
-O pré-plotter também gera padrões matemáticos para desenho sequencial.
-
-| Padrão        | Comando                | Descrição                           |
-| ------------- | ---------------------- | ----------------------------------- |
-| Senoide       | `--pattern sine`       | onda senoidal do topo à base do ovo |
-| Multi-senoide | `--pattern multi-sine` | dois períodos de senoide            |
-| Espiral       | `--pattern spiral`     | espiral expandindo                  |
-| Quadrado      | `--pattern square`     | desenho geométrico simples          |
-| Círculo       | `--pattern circle`     | calibração e simetria               |
-| Estrela       | `--pattern star`       | padrão estelar                      |
-
-### Exemplos
-
-#### Senoide
-
-```bash
-python3 -m preplotter.main --port /dev/ttyACM0 --run --pattern sine
-```
-
-#### Espiral
-
-```bash
-python3 -m preplotter.main --port /dev/ttyACM0 --run --pattern spiral
-```
-
-#### Círculo
-
-```bash
-python3 -m preplotter.main --port /dev/ttyACM0 --run --pattern circle
-```
+* ✅ Arduino e motores validados
+* ✅ Comunicação serial funcionando
+* ✅ Controle por linha de comando
+* ✅ Geração de padrões geométricos
+* ✅ Testes realizados no hardware
+* ⏳ Importação de SVG
+* ⏳ Controle da caneta por servo
+* ⏳ Integração futura com ESP32
 
 ---
 
-## Testes no hardware
-
-Os testes abaixo foram executados no Arduino real com o firmware EggDuino e passaram com sucesso.
-
-### Teste 1: referência
-
-```bash
-python3 -m preplotter.main --port /dev/ttyACM0 --run --test reference
-```
-
-Resultado esperado:
-
-```text
-SM,2000,0,800
-```
-
-### Teste 2: retorno
-
-```bash
-python3 -m preplotter.main --port /dev/ttyACM0 --run --test return
-```
-
-### Teste 3: braço
-
-```bash
-python3 -m preplotter.main --port /dev/ttyACM0 --run --test arm
-```
-
-### Teste 4: diagonal
-
-```bash
-python3 -m preplotter.main --port /dev/ttyACM0 --run --test diagonal
-```
-
-### Teste 5: padrão senoide
-
-```bash
-python3 -m preplotter.main --port /dev/ttyACM0 --run --pattern sine
-```
-
-Resultado: linha senoidal do topo à base do ovo executada com sucesso.
-
----
-
-## Comandos úteis
-
-### Ver portas USB
-
-```bash
-ls /dev/tty*
-```
-
-### Ver ajuda
-
-```bash
-python3 -m preplotter.main --help
-```
-
-### Rodar exemplos
-
-```bash
-python3 exemplos_padroes.py
-```
-
----
-
-## Convenção de commits
-
-O projeto usa uma convenção simples e padronizada, inspirada em Conventional Commits.
-
-### Estrutura
-
-```text
-<tipo>(<escopo>): <descrição curta>
-```
-
-### Tipos recomendados
-
-* `feat`: nova funcionalidade
-* `fix`: correção de bug
-* `docs`: documentação
-* `refactor`: refatoração
-* `test`: testes
-* `chore`: manutenção
-* `perf`: performance
-
-### Exemplos
-
-```bash
-git commit -m "feat(preplotter): add sine wave pattern support"
-git commit -m "fix(serial): handle invalid EggDuino response"
-git commit -m "docs(readme): centralize project instructions"
-git commit -m "test(patterns): validate spiral and circle generation"
-```
-
-### Regras
-
-* usar verbo no imperativo
-* manter a mensagem curta e clara
-* usar escopo quando fizer sentido
-* manter histórico consistente
-
----
-
-## Regras de contribuição
-
-* manter o README principal como ponto central de referência
-* documentar mudanças de comportamento e comando
-* não alterar a pasta EggDuino sem necessidade explícita
-* validar no hardware em mudanças relevantes
-* seguir a convenção de commits acima
-
----
-
-## Observações finais
-
-Este projeto foi organizado para funcionar de forma simples no Ubuntu, com foco em:
-
-* estabilidade serial
-* validação real do hardware
-* facilidade de uso em linha de comando
-* expansão de padrões de desenho
-
-## Referências e projetos relacionados
-
-Este projeto foi desenvolvido com base em implementações, projetos open source e referências de montagem já existentes na comunidade EggBot.
-
-### Firmware EggDuino
+## Referências
 
 * [EggDuino — plex3r](https://github.com/plex3r/EggDuino)
-
-Firmware utilizado como base para permitir o controle do EggBot utilizando Arduino UNO e comunicação serial compatível com os comandos do projeto.
-
-### Projeto original EggBot
-
 * [EggBot — Evil Mad Scientist](https://github.com/evil-mad/EggBot)
-
-Repositório do projeto EggBot da Evil Mad Scientist, utilizado como referência para arquitetura, funcionamento do plotter e protocolo de controle.
-
-### Referência de montagem
-
-* [EggBot / Egg Painting Robot — YouTube](https://www.youtube.com/watch?v=F3q-DkTBnXs)
-
-Vídeo utilizado como uma das referências para compreender a construção, montagem e funcionamento mecânico do sistema.
-
-### Estrutura mecânica
-
-* [Eggbot — Thingiverse #3431363](https://www.thingiverse.com/thing:3431363)
-
-Modelo utilizado como referência para a estrutura mecânica e componentes impressos em 3D do protótipo.
+* [Referência de montagem — YouTube](https://www.youtube.com/watch?v=F3q-DkTBnXs)
+* [Modelo mecânico — Thingiverse](https://www.thingiverse.com/thing:3431363)
 
 ---
 
 ## Créditos
 
-Este repositório contém implementações e adaptações desenvolvidas especificamente para este projeto, principalmente na camada de controle em Python, planejamento de movimento, testes e execução via linha de comando.
+O firmware EggDuino e os projetos utilizados como referência pertencem aos seus respectivos autores.
 
-O firmware EggDuino e os projetos utilizados como referência pertencem aos seus respectivos autores e mantenedores. Consulte os repositórios originais para informações sobre autoria, licenciamento e implementação.
-
+Este repositório documenta as adaptações, integração do hardware e desenvolvimento do pré-plotter em Python realizados para este projeto.
